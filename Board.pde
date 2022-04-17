@@ -1,5 +1,5 @@
 public class Board {
-  int mineNum, safetyNum;
+  int mineNum, safetyNum, flagNum;
   boolean isFinish;
   boolean isGameOver;
   PVector pos, size, cnt, gridSize;
@@ -25,6 +25,7 @@ public class Board {
     mines  = new boolean[int(cnt.x)][int(cnt.y)];
     flags  = new boolean[int(cnt.x)][int(cnt.y)];
     safetyNum = int(cnt.x)*int(cnt.y)-mineNum;
+    flagNum = 0;
     int addMineNum = mineNum;
     while(addMineNum > 0){
       int x = int(random(cnt.x));
@@ -84,6 +85,7 @@ public class Board {
     int x = int((mouse_x-(pos.x-size.x))/gridSize.x);
     int y = int((mouse_y-(pos.y-size.y))/gridSize.y);
     if(boards[x][y]) return;
+    flagNum = flagNum + (flags[x][y]? -1: 1);
     flags[x][y] = !flags[x][y];
   }
   void displeyEmoticon(){
@@ -158,9 +160,18 @@ public class Board {
       line(pos.x-size.x, y, pos.x+size.x, y);
     }
   }
+  void displayMineNum(){
+    float x = width*0.9;
+    float y = height/20;
+    fill(255);
+    rect(x, y, width/6, gridSize.y*1.5);
+    fill(255, 0, 0);
+    text(mineNum-flagNum, x, y);
+  }
   void display(){
     displeyEmoticon();
     displayGrid();
+    displayMineNum();
 
     for(int i = 0; i < cnt.x; i++) for(int j = 0; j < cnt.y; j++){
       float x = pos.x-size.x + (1.0+2*i)*gridSize.x/2;
