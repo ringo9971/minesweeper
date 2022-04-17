@@ -43,6 +43,7 @@ public class Board {
 
     boards[x][y] = true;
     safetyNum--;
+    if(safetyNum == 0) isFinish = true;
     if(mines[x][y]){
       isGameOver = true;
       return;
@@ -76,8 +77,6 @@ public class Board {
     int x = int((mouse_x-(pos.x-size.x))/gridSize.x);
     int y = int((mouse_y-(pos.y-size.y))/gridSize.y);
     push(x, y);
-
-    if(safetyNum == 0) isFinish = true;
   }
   void setFlag(float mouse_x, float mouse_y){
     if(isFinish || isGameOver) return;
