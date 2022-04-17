@@ -1,5 +1,6 @@
 public class Board {
-  int mineNum;
+  int mineNum, safetyNum;
+  boolean isFinish;
   boolean isGameOver;
   PVector pos, size, cnt, gridSize;
   boolean[][] board, mine, flag;
@@ -14,10 +15,12 @@ public class Board {
   }
 
   void init(){
+    isFinish = false;
     isGameOver = false;
     board = new boolean[int(cnt.x)][int(cnt.y)];
     mine  = new boolean[int(cnt.x)][int(cnt.y)];
     flag  = new boolean[int(cnt.x)][int(cnt.y)];
+    safetyNum = int(cnt.x)*int(cnt.y)-mineNum;
     int addMineNum = mineNum;
     while(addMineNum > 0){
       int x = int(random(cnt.x));
@@ -29,17 +32,19 @@ public class Board {
   }
 
   void push(float mouse_x, float mouse_y){
-    if(isGameOver) return;
+    if(isFinish || isGameOver) return;
     if(OUT(mouse_x, pos.x-size.x, pos.x+size.x)) return;
     if(OUT(mouse_y, pos.y-size.y, pos.y+size.y)) return;
 
     int x = int((mouse_x-(pos.x-size.x))/gridSize.x);
     int y = int((mouse_y-(pos.y-size.y))/gridSize.y);
     board[x][y] = true;
+    safetyNum--;
     if(mine[x][y]){
       isGameOver = true;
       return;
     }
+    if(safetyNum == 0) isFinish = true;
   }
   void displeyEmoticon(){
     fill(255);
@@ -60,6 +65,15 @@ public class Board {
       line(x+dx/4-dx/8, y-dy/7+dy/8, x+dx/4+dx/8, y-dy/7-dy/8);
       fill(255, 255, 0);
       arc(x, y+dy*0.45, 0.6*dx, 0.5*dy, PI+PI/10, 2*PI-PI/10);
+    }else if(isFinish){
+      rect(x-dx/4, y-dy/8, dx*0.4, dy/4);
+      rect(x+dx/4, y-dy/8, dx*0.4, dy/4);
+      line(x-dx/4, y-dy/4, x+dx/4, y-dy/4);
+      line(x-dx/4-dx*0.2, y-dy/4, x-dx*0.6, y);
+      line(x+dx/4+dx*0.2, y-dy/4, x+dx*0.6, y);
+      fill(255, 255, 0);
+      strokeWeight(5);
+      arc(x, y+dy/20, 0.8*dx, 0.7*dy, PI/10, PI-PI/10);
     }else{
       ellipse(x-dx/4, y-dy/8, 0.2*dx, 0.2*dy);
       ellipse(x+dx/4, y-dy/8, 0.2*dx, 0.2*dy);
