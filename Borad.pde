@@ -148,6 +148,6 @@ public class Board {
       }
     }
 
-    if(isGameOver) displayALLMines();
+    if(isGameOver || isFinish) displayALLMines();
   }
 }
