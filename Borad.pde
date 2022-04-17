@@ -4,7 +4,7 @@ public class Board {
   boolean isGameOver;
   PVector pos, size, cnt, gridSize;
   int[][] aroundMineNums;
-  boolean[][] board, mine, flag;
+  boolean[][] boards, mines, flags;
   int[] dx = { 0,  1, 1, 1, 0, -1, -1, -1};
   int[] dy = {-1, -1, 0, 1, 1,  1,  0, -1};
 
@@ -21,26 +21,26 @@ public class Board {
     isFinish = false;
     isGameOver = false;
     aroundMineNums = new int[int(cnt.x)][int(cnt.y)];
-    board = new boolean[int(cnt.x)][int(cnt.y)];
-    mine  = new boolean[int(cnt.x)][int(cnt.y)];
-    flag  = new boolean[int(cnt.x)][int(cnt.y)];
+    boards = new boolean[int(cnt.x)][int(cnt.y)];
+    mines  = new boolean[int(cnt.x)][int(cnt.y)];
+    flags  = new boolean[int(cnt.x)][int(cnt.y)];
     safetyNum = int(cnt.x)*int(cnt.y)-mineNum;
     int addMineNum = mineNum;
     while(addMineNum > 0){
       int x = int(random(cnt.x));
       int y = int(random(cnt.y));
-      if(mine[x][y]) continue;
-      mine[x][y] = true;
+      if(mines[x][y]) continue;
+      mines[x][y] = true;
       addMineNum--;
     }
   }
 
   void push(int x, int y){
-    if(board[x][y]) return;
+    if(boards[x][y]) return;
 
-    board[x][y] = true;
+    boards[x][y] = true;
     safetyNum--;
-    if(mine[x][y]){
+    if(mines[x][y]){
       isGameOver = true;
       return;
     }
@@ -49,7 +49,7 @@ public class Board {
       int nx = x+dx[i];
       int ny = y+dy[i];
       if(OUT(0, nx, int(cnt.x)) || OUT(0, ny, int(cnt.y))) continue;
-      if(mine[nx][ny]) aroundMineNum++;
+      if(mines[nx][ny]) aroundMineNum++;
     }
     aroundMineNums[x][y] = aroundMineNum;
     
@@ -117,7 +117,7 @@ public class Board {
   }
   void displayALLMines(){
     for(int i = 0; i < cnt.x; i++) for(int j = 0; j < cnt.y; j++){
-      if(mine[i][j]) displayMine(i, j);
+      if(mines[i][j]) displayMine(i, j);
     }
   }
   void display(){
@@ -135,8 +135,8 @@ public class Board {
     }
 
     for(int i = 0; i < cnt.x; i++) for(int j = 0; j < cnt.y; j++){
-      if(board[i][j]){
-        if(mine[i][j]) fill(255, 0, 0);
+      if(boards[i][j]){
+        if(mines[i][j]) fill(255, 0, 0);
         else fill(170);
         float x = pos.x-size.x + (1.0+2*i)*gridSize.x/2;
         float y = pos.y-size.y + (1.0+2*j)*gridSize.y/2;
