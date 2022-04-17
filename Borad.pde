@@ -46,15 +46,15 @@ public class Board {
     for(int i = 0; i < 8; i++){
       int nx = x+dx[i];
       int ny = y+dy[i];
-      if(OUT(nx, 0, int(cnt.x)) || OUT(ny, 0, int(cnt.y))) continue;
+      if(OUT(0, nx, int(cnt.x)) || OUT(0, ny, int(cnt.y))) continue;
       if(mine[nx][ny]) aroundMineNum++;
     }
     aroundMineNums[x][y] = aroundMineNum;
   }
   void mousePush(float mouse_x, float mouse_y){
     if(isFinish || isGameOver) return;
-    if(OUT(mouse_x, pos.x-size.x, pos.x+size.x)) return;
-    if(OUT(mouse_y, pos.y-size.y, pos.y+size.y)) return;
+    if(OUT(pos.x-size.x, mouse_x, pos.x+size.x)) return;
+    if(OUT(pos.y-size.y, mouse_y, pos.y+size.y)) return;
 
     int x = int((mouse_x-(pos.x-size.x))/gridSize.x);
     int y = int((mouse_y-(pos.y-size.y))/gridSize.y);

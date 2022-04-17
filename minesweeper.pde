@@ -6,10 +6,10 @@ void setup(){
   textAlign(CENTER, CENTER);
   board = new Board(width/2, height/2+height/20, width/2*0.98, height*(1.0/2-1.0/20)*0.98, 15, 18, 20);
 }
-boolean OUT(float val, float val_min, float val_maval){
+boolean OUT(float val_min, float val, float val_maval){
   return val < val_min || val_maval < val;
 }
-boolean OUT(int val, int val_min, int val_maval){
+boolean OUT(int val_min, int val, int val_maval){
   return val < val_min || val_maval <= val;
 }
 
