@@ -36,6 +36,8 @@ public class Board {
   }
 
   void push(int x, int y){
+    if(board[x][y]) return;
+
     board[x][y] = true;
     safetyNum--;
     if(mine[x][y]){
@@ -50,6 +52,14 @@ public class Board {
       if(mine[nx][ny]) aroundMineNum++;
     }
     aroundMineNums[x][y] = aroundMineNum;
+    
+    if(aroundMineNum != 0) return;
+    for(int i = 0; i < 8; i++){
+      int nx = x+dx[i];
+      int ny = y+dy[i];
+      if(OUT(0, nx, int(cnt.x)) || OUT(0, ny, int(cnt.y))) continue;
+      push(nx, ny);
+    }
   }
   void mousePush(float mouse_x, float mouse_y){
     if(isFinish || isGameOver) return;
