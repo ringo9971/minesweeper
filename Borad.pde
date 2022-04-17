@@ -1,15 +1,29 @@
 public class Board {
+  int mineNum;
   PVector pos, size, cnt, gridSize;
   boolean[][] board, mine, flag;
 
-  Board(float x, float y, float dx, float dy, int cx, int cy){
+  Board(float x, float y, float dx, float dy, int cx, int cy, int mineNum){
     pos  = new PVector(x, y);
     size = new PVector(dx, dy);
     cnt  = new PVector(cx, cy);
     gridSize = new PVector(2*dx/cx, 2*dy/cy);
-    board = new boolean[cx][cy];
-    mine  = new boolean[cx][cy];
-    flag  = new boolean[cx][cy];
+    this.mineNum = mineNum;
+    init();
+  }
+
+  void init(){
+    board = new boolean[int(cnt.x)][int(cnt.y)];
+    mine  = new boolean[int(cnt.x)][int(cnt.y)];
+    flag  = new boolean[int(cnt.x)][int(cnt.y)];
+    int addMineNum = mineNum;
+    while(addMineNum > 0){
+      int x = int(random(cnt.x));
+      int y = int(random(cnt.y));
+      if(mine[x][y]) continue;
+      mine[x][y] = true;
+      addMineNum--;
+    }
   }
 
   void push(float mouse_x, float mouse_y){
