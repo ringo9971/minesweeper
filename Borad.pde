@@ -3,7 +3,10 @@ public class Board {
   boolean isFinish;
   boolean isGameOver;
   PVector pos, size, cnt, gridSize;
+  int[][] aroundMineNums;
   boolean[][] board, mine, flag;
+  int[] dx = { 0,  1, 1, 1, 0, -1, -1, -1};
+  int[] dy = {-1, -1, 0, 1, 1,  1,  0, -1};
 
   Board(float x, float y, float dx, float dy, int cx, int cy, int mineNum){
     pos  = new PVector(x, y);
@@ -17,6 +20,7 @@ public class Board {
   void init(){
     isFinish = false;
     isGameOver = false;
+    aroundMineNums = new int[int(cnt.x)][int(cnt.y)];
     board = new boolean[int(cnt.x)][int(cnt.y)];
     mine  = new boolean[int(cnt.x)][int(cnt.y)];
     flag  = new boolean[int(cnt.x)][int(cnt.y)];
@@ -31,19 +35,31 @@ public class Board {
     }
   }
 
-  void push(float mouse_x, float mouse_y){
-    if(isFinish || isGameOver) return;
-    if(OUT(mouse_x, pos.x-size.x, pos.x+size.x)) return;
-    if(OUT(mouse_y, pos.y-size.y, pos.y+size.y)) return;
-
-    int x = int((mouse_x-(pos.x-size.x))/gridSize.x);
-    int y = int((mouse_y-(pos.y-size.y))/gridSize.y);
+  void push(int x, int y){
     board[x][y] = true;
     safetyNum--;
     if(mine[x][y]){
       isGameOver = true;
       return;
     }
+    int aroundMineNum = 0;
+    for(int i = 0; i < 8; i++){
+      int nx = x+dx[i];
+      int ny = y+dy[i];
+      if(OUT(nx, 0, int(cnt.x)) || OUT(ny, 0, int(cnt.y))) continue;
+      if(mine[nx][ny]) aroundMineNum++;
+    }
+    aroundMineNums[x][y] = aroundMineNum;
+  }
+  void mousePush(float mouse_x, float mouse_y){
+    if(isFinish || isGameOver) return;
+    if(OUT(mouse_x, pos.x-size.x, pos.x+size.x)) return;
+    if(OUT(mouse_y, pos.y-size.y, pos.y+size.y)) return;
+
+    int x = int((mouse_x-(pos.x-size.x))/gridSize.x);
+    int y = int((mouse_y-(pos.y-size.y))/gridSize.y);
+    push(x, y);
+
     if(safetyNum == 0) isFinish = true;
   }
   void displeyEmoticon(){
@@ -115,6 +131,10 @@ public class Board {
         float x = pos.x-size.x + (1.0+2*i)*gridSize.x/2;
         float y = pos.y-size.y + (1.0+2*j)*gridSize.y/2;
         rect(x, y, gridSize.x, gridSize.y);
+        if(aroundMineNums[i][j] != 0){
+          fill(255);
+          text(aroundMineNums[i][j], x, y-gridSize.y/10);
+        }
       }
     }
 
