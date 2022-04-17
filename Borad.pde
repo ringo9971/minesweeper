@@ -62,6 +62,10 @@ public class Board {
     }
   }
   void mousePush(float mouse_x, float mouse_y){
+    if(IN(width/2-gridSize.x*1.5/2, mouse_x, width/2+gridSize.x*1.5/2) && IN(height/20-gridSize.y*1.5/2, mouse_y, height/20+gridSize.y*1.5/2)){
+      init();
+      return;
+    }
     if(isFinish || isGameOver) return;
     if(OUT(pos.x-size.x, mouse_x, pos.x+size.x)) return;
     if(OUT(pos.y-size.y, mouse_y, pos.y+size.y)) return;

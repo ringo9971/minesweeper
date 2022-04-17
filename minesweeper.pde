@@ -12,6 +12,9 @@ boolean OUT(float val_min, float val, float val_maval){
 boolean OUT(int val_min, int val, int val_maval){
   return val < val_min || val_maval <= val;
 }
+boolean IN(float val_min, float val, float val_maval){
+  return val_min < val && val < val_maval;
+}
 
 void mousePressed(){
   if(mouseButton == LEFT) board.mousePush(mouseX, mouseY);
