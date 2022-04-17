@@ -90,6 +90,30 @@ public class Board {
     flagNum = flagNum + (flags[x][y]? -1: 1);
     flags[x][y] = !flags[x][y];
   }
+  void expandPush(float mouse_x, float mouse_y){
+    if(isFinish || isGameOver) return;
+    if(OUT(pos.x-size.x, mouse_x, pos.x+size.x)) return;
+    if(OUT(pos.y-size.y, mouse_y, pos.y+size.y)) return;
+
+    int x = int((mouse_x-(pos.x-size.x))/gridSize.x);
+    int y = int((mouse_y-(pos.y-size.y))/gridSize.y);
+    if(!boards[x][y] || aroundMineNums[x][y] == 0) return;
+
+    int aroundFlagNum = 0;
+    for(int i = 0; i < 8; i++){
+      int nx = x+dx[i];
+      int ny = y+dy[i];
+      if(OUT(0, nx, int(cnt.x)) || OUT(0, ny, int(cnt.y))) continue;
+      if(flags[nx][ny]) aroundFlagNum++;
+    }
+    if(aroundFlagNum != aroundMineNums[x][y]) return;
+    for(int i = 0; i < 8; i++){
+      int nx = x+dx[i];
+      int ny = y+dy[i];
+      if(OUT(0, nx, int(cnt.x)) || OUT(0, ny, int(cnt.y))) continue;
+      push(nx, ny);
+    }
+  }
   void displeyEmoticon(){
     fill(255);
     float x = width/2;

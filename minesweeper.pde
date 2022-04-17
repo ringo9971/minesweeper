@@ -17,7 +17,8 @@ boolean IN(float val_min, float val, float val_maval){
 }
 
 void mousePressed(){
-  if(mouseButton == LEFT) board.mousePush(mouseX, mouseY);
+  if(mouseButton == CENTER) board.expandPush(mouseX, mouseY);
+  else if(mouseButton == LEFT) board.mousePush(mouseX, mouseY);
   else if(mouseButton == RIGHT) board.setFlag(mouseX, mouseY);
 }
 void keyPressed(){
