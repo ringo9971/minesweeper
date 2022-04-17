@@ -1,4 +1,5 @@
 public class Board {
+  int startTime, endTime;
   int mineNum, safetyNum, flagNum;
   boolean isFinish;
   boolean isGameOver;
@@ -26,6 +27,7 @@ public class Board {
     flags  = new boolean[int(cnt.x)][int(cnt.y)];
     safetyNum = int(cnt.x)*int(cnt.y)-mineNum;
     flagNum = 0;
+    startTime = millis();
     int addMineNum = mineNum;
     while(addMineNum > 0){
       int x = int(random(cnt.x));
@@ -168,10 +170,19 @@ public class Board {
     fill(255, 0, 0);
     text(mineNum-flagNum, x, y);
   }
+  void displayTime(){
+    float x = width*0.1;
+    float y = height/20;
+    fill(255);
+    rect(x, y, width/6, gridSize.y*1.5);
+    fill(255, 0, 0);
+    text((endTime-startTime)/1000, x, y);
+  }
   void display(){
     displeyEmoticon();
     displayGrid();
     displayMineNum();
+    displayTime();
 
     for(int i = 0; i < cnt.x; i++) for(int j = 0; j < cnt.y; j++){
       float x = pos.x-size.x + (1.0+2*i)*gridSize.x/2;
@@ -192,5 +203,6 @@ public class Board {
     }
 
     if(isGameOver || isFinish) displayALLMines();
+    else endTime = millis();
   }
 }
