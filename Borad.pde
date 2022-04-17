@@ -1,5 +1,6 @@
 public class Board {
   int mineNum;
+  boolean isGameOver;
   PVector pos, size, cnt, gridSize;
   boolean[][] board, mine, flag;
 
@@ -13,6 +14,7 @@ public class Board {
   }
 
   void init(){
+    isGameOver = false;
     board = new boolean[int(cnt.x)][int(cnt.y)];
     mine  = new boolean[int(cnt.x)][int(cnt.y)];
     flag  = new boolean[int(cnt.x)][int(cnt.y)];
@@ -27,11 +29,16 @@ public class Board {
   }
 
   void push(float mouse_x, float mouse_y){
+    if(isGameOver) return;
     if(OUT(mouse_x, pos.x-size.x, pos.x+size.x)) return;
     if(OUT(mouse_y, pos.y-size.y, pos.y+size.y)) return;
 
     int x = int((mouse_x-(pos.x-size.x))/gridSize.x);
     int y = int((mouse_y-(pos.y-size.y))/gridSize.y);
+    if(mine[x][y]){
+      isGameOver = true;
+      return;
+    }
     board[x][y] = true;
   }
   void display(){
