@@ -129,8 +129,19 @@ public class Board {
     fill(0);
     ellipse(x, y, 0.7*gridSize.x, 0.7*gridSize.y);
   }
+  void displayMissFlag(float i, float j){
+    float x = pos.x-size.x + (1.0+2*i)*gridSize.x/2;
+    float y = pos.y-size.y + (1.0+2*j)*gridSize.y/2;
+    strokeWeight(5);
+    stroke(255, 0, 0);
+    line(x-gridSize.x/2, y-gridSize.y/2, x+gridSize.x/2, y+gridSize.y/2);
+    line(x-gridSize.x/2, y+gridSize.y/2, x+gridSize.x/2, y-gridSize.y/2);
+    strokeWeight(1);
+    stroke(0);
+  }
   void displayALLMines(){
     for(int i = 0; i < cnt.x; i++) for(int j = 0; j < cnt.y; j++){
+      if(!mines[i][j] && flags[i][j]) displayMissFlag(i, j);
       if(mines[i][j] && !flags[i][j]) displayMine(i, j);
     }
   }
