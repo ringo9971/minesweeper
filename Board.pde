@@ -145,8 +145,7 @@ public class Board {
       if(mines[i][j] && !flags[i][j]) displayMine(i, j);
     }
   }
-  void display(){
-    displeyEmoticon();
+  void displayGrid(){
     fill(255);
     rect(pos.x, pos.y, size.x*2, size.y*2);
     fill(0);
@@ -158,6 +157,10 @@ public class Board {
       float y = pos.y-size.y + j*gridSize.y;
       line(pos.x-size.x, y, pos.x+size.x, y);
     }
+  }
+  void display(){
+    displeyEmoticon();
+    displayGrid();
 
     for(int i = 0; i < cnt.x; i++) for(int j = 0; j < cnt.y; j++){
       float x = pos.x-size.x + (1.0+2*i)*gridSize.x/2;
