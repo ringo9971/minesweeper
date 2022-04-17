@@ -131,7 +131,7 @@ public class Board {
   }
   void displayALLMines(){
     for(int i = 0; i < cnt.x; i++) for(int j = 0; j < cnt.y; j++){
-      if(mines[i][j]) displayMine(i, j);
+      if(mines[i][j] && !flags[i][j]) displayMine(i, j);
     }
   }
   void display(){
