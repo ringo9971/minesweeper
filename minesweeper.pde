@@ -15,6 +15,7 @@ boolean OUT(int val_min, int val, int val_maval){
 
 void mousePressed(){
   if(mouseButton == LEFT) board.mousePush(mouseX, mouseY);
+  else if(mouseButton == RIGHT) board.setFlag(mouseX, mouseY);
 }
 void keyPressed(){
   if(key == 'q'){

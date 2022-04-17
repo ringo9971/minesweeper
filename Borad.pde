@@ -36,7 +36,7 @@ public class Board {
   }
 
   void push(int x, int y){
-    if(boards[x][y]) return;
+    if(boards[x][y] || flags[x][y]) return;
 
     boards[x][y] = true;
     safetyNum--;
@@ -71,6 +71,16 @@ public class Board {
     push(x, y);
 
     if(safetyNum == 0) isFinish = true;
+  }
+  void setFlag(float mouse_x, float mouse_y){
+    if(isFinish || isGameOver) return;
+    if(OUT(pos.x-size.x, mouse_x, pos.x+size.x)) return;
+    if(OUT(pos.y-size.y, mouse_y, pos.y+size.y)) return;
+
+    int x = int((mouse_x-(pos.x-size.x))/gridSize.x);
+    int y = int((mouse_y-(pos.y-size.y))/gridSize.y);
+    if(boards[x][y]) return;
+    flags[x][y] = !flags[x][y];
   }
   void displeyEmoticon(){
     fill(255);
@@ -135,16 +145,20 @@ public class Board {
     }
 
     for(int i = 0; i < cnt.x; i++) for(int j = 0; j < cnt.y; j++){
+      float x = pos.x-size.x + (1.0+2*i)*gridSize.x/2;
+      float y = pos.y-size.y + (1.0+2*j)*gridSize.y/2;
       if(boards[i][j]){
         if(mines[i][j]) fill(255, 0, 0);
         else fill(170);
-        float x = pos.x-size.x + (1.0+2*i)*gridSize.x/2;
-        float y = pos.y-size.y + (1.0+2*j)*gridSize.y/2;
         rect(x, y, gridSize.x, gridSize.y);
         if(aroundMineNums[i][j] != 0){
           fill(255);
           text(aroundMineNums[i][j], x, y-gridSize.y/10);
         }
+      }
+      if(flags[i][j]){
+        fill(255, 0, 0);
+        rect(x, y, gridSize.x/2, gridSize.y/2);
       }
     }
 
